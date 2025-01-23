@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from "react";
+import { MetaMaskContext } from "./MetaMaskContext";
+import SubmitTransaction from "./components/SubmitTransaction";
+import ConfirmTransaction from "./components/ConfirmTransaction";
+import ExecuteTransaction from "./components/ExecuteTransaction";
+import ViewTransactions from "./components/ViewTransactions";
+import "./App.css";
 
-function App() {
+// Utility function to shorten the address
+const shortenAddress = (address) => {
+  if (!address) return "";
+  return `${address.slice(0, 6)}.......${address.slice(-6)}`;
+};
+
+const App = () => {
+  const { account, connectMetaMask } = useContext(MetaMaskContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      {/* Navigation Bar */}
+      <div className="navbar">
+        <h1>Gnosis Safe Simplified</h1>
+        {account ? (
+          <div className="address" style={{ color: "white" }}>
+            {shortenAddress(account)}
+          </div>
+        ) : (
+          <button onClick={connectMetaMask}>Connect Wallet</button>
+        )}
+      </div>
+
+      {/* Cards for Components */}
+      <div className="card">
+        <SubmitTransaction />
+      </div>
+      <div className="card">
+        <ConfirmTransaction />
+      </div>
+      <div className="card">
+        <ExecuteTransaction />
+      </div>
+      <div className="card">
+        <ViewTransactions />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
